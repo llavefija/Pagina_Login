@@ -2,7 +2,7 @@
 
 namespace Pagina_Login.Models.ViewModels
 {
-    public class LoginViewModel
+    public class LoginViewModel 
     {
         [Required(ErrorMessage = "El nombre de usuaro es obligatorio.")]
         [Display(Name = "Nombre de Usuario")]
