@@ -53,20 +53,27 @@ namespace Pagina_Login.Controllers
                 UsuarioModel usuario = new UsuarioModel();
 
                 usuario.UserName = model.Username;
-                usuario.Passwd = model.Password;
 
-                dal.CreateUsuario(usuario);
+                UsuarioModel usuarioExistente = dal.GetUsuarioLogin(usuario.UserName, model.Password);
+
+                // Validar Usuario
+                if (usuarioExistente != null)
+                {
+                    ModelState.AddModelError("", "Usuario existente");
+                    return View(model);
+                }
+
+                dal.CreateUsuario(usuario, model.Password);
 
                 UsuarioModel validarCreacion = dal.GetUsuarioLogin(model.Username, model.Password);
 
-                // Validar Usuario
                 if (validarCreacion != null)
                 {
                     HttpContext.Session.SetString("Username", usuario.UserName);
                     return RedirectToAction("Index", "Home");
                 }
 
-                ModelState.AddModelError("", "No se ha podido crear el usuario.");
+                ModelState.AddModelError("", "No se ha podido crear usuario");
             }
             return View(model);
         }
